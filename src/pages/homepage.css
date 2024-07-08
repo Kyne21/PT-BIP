@@ -1,0 +1,11 @@
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* height: auto;  */
+  }
+
+.table{
+    display: flex;
+    width: 92vw;
+}
