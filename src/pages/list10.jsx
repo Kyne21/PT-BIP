@@ -4,13 +4,16 @@ import Table from "../components/table10";
 
 
 
-function Homepage() {
+function List10() {
 
   return (
     <div>
       <Header />
+      <div className="ml-20 mr-20">
+        <Table />
+      </div>
     </div>
   );
 }
 
-export default Homepage;
+export default List10;

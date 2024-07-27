@@ -3,15 +3,42 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Homepage from './pages/homepage';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import FormDOKecil from './pages/form10';
+import Error from './pages/error404'
+import FormDOBesar from './pages/form90';
+import List10 from './pages/list10'
+import List90 from './pages/list90'
+
+const router = createBrowserRouter([
+  {
+    path:'/',
+    element: <Homepage/>,
+    errorElement: <Error/>
+  },
+  {
+    path:'/form10',
+    element: <FormDOKecil/>
+  },
+  {
+    path:'/form90',
+    element: <FormDOBesar/>
+  },
+  {
+    path:'/list90',
+    element: <List90/>
+  },
+  {
+    path:'/list10',
+    element: <List10/>
+  }
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Homepage/>
+    <RouterProvider router={router}/>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
