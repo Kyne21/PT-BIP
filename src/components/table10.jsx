@@ -27,16 +27,14 @@ const Table = () => {
           <table className="table-auto w-full border-collapse border border-gray-200">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-4 py-2 text-left">No Antrian</th>
-                <th className="px-4 py-2 text-left">No SPPG</th>
-                <th className="px-4 py-2 text-left">No SO</th>
-                <th className="px-4 py-2 text-left">Tanggal Ambil</th>
-                <th className="px-4 py-2 text-left">No Urut</th>
-                <th className="px-4 py-2 text-left">No DO</th>
-                <th className="px-4 py-2 text-left">No Kontrak</th>
-                <th className="px-4 py-2 text-left">Atas Nama</th>
-                <th className="px-4 py-2 text-left">Kuanta Ambil</th>
-                <th className="px-4 py-2 text-left">Masa Berlaku</th>
+                <th className="px-4 py-2 text-left">Nama Customer</th>
+                <th className="px-4 py-2 text-left">Invoice</th>
+                <th className="px-4 py-2 text-left">Surat Jalan</th>
+                <th className="px-4 py-2 text-left">Surat PO</th>
+                <th className="px-4 py-2 text-left">Nominal</th>
+                <th className="px-4 py-2 text-left">Tanggal Masuk</th>
+                <th className="px-4 py-2 text-left">Status</th>
+                <th className="px-4 py-2 text-left">Pembayaran</th>
               </tr>
             </thead>
             <tbody>
@@ -46,8 +44,6 @@ const Table = () => {
                   <td className="px-4 py-2">{item.sppg}</td>
                   <td className="px-4 py-2">{item.no_so}</td>
                   <td className="px-4 py-2">{item.tgl_ambil}</td>
-                  <td className="px-4 py-2">{item.no_urut}</td>
-                  <td className="px-4 py-2">{item.no_do}</td>
                   <td className="px-4 py-2">{item.no_kontrak}</td>
                   <td className="px-4 py-2">{item.nama}</td>
                   <td className="px-4 py-2">{item.kuanta_10}</td>

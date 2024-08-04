@@ -38,7 +38,7 @@ const Form = () => {
   const saveData = async (event) => {
     event.preventDefault();
     try {
-      const docRef = await addDoc(collection(db, "do_90"), {
+      const docRef = await addDoc(collection(db, "customer"), {
         sppg: formData.sppg,
         antrian: formData.antrian,
         kode: formData.kode,
