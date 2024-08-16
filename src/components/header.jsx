@@ -149,22 +149,16 @@ export default function Header() {
             </PopoverPanel>
           </Popover>
           <a
-            href="#"
+            href="/print10"
             className="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
           >
-            Features
+            Print DO 10
           </a>
           <a
-            href="#"
+            href="/print90"
             className="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
           >
-            Marketplace
-          </a>
-          <a
-            href="#"
-            className="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
-          >
-            Company
+            Print DO 90
           </a>
         </PopoverGroup>
       </nav>

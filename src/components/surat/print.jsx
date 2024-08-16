@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-function App() {
+function Print() {
   const [currentDate, setCurrentDate] = useState("");
   const pdfRef = useRef();
 
@@ -10,7 +10,7 @@ function App() {
     const input = pdfRef.current;
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4', true);
+      const pdf = new jsPDF('l', 'mm', 'a4', true);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
@@ -34,7 +34,7 @@ function App() {
   }, []);
   return (
     <>
-    <div ref={pdfRef} className="container h-1/4">
+    <div ref={pdfRef}>
       <div
         className="container mx-auto mt-10 font-inter"
         style={{ width: "60vw" }}
@@ -143,7 +143,7 @@ function App() {
         <button
         onClick={downloadPDF}
           type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          class="mr-16 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
           Download
         </button>
@@ -152,4 +152,4 @@ function App() {
   );
 }
 
-export default App;
+export default Print;
