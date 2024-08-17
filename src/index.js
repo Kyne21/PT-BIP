@@ -9,6 +9,8 @@ import Error from './pages/error404'
 import FormDOBesar from './pages/form90';
 import List10 from './pages/list10'
 import List90 from './pages/list90'
+import Print from './pages/print10';
+import Perintah from './pages/print90';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
   {
     path:'/list10',
     element: <List10/>
+  },
+  {
+    path:'/print10',
+    element: <Print/>
+  },
+  {
+    path:'/print90',
+    element: <Perintah/>
   }
 ]);
 
