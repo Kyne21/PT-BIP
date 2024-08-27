@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-import '../../firebaseConfig';
+import React, { useState, useEffect, useRef } from "react";
 
 function Print() {
   const [currentDate, setCurrentDate] = useState("");
-  const [sppgNumbers, setSppgNumbers] = useState([""]);
-  const [data, setData] = useState([]);
-  const db = getFirestore();
+  const [sppgNumbers, setSppgNumbers] = useState(["", "", "", ""]);
 
   useEffect(() => {
     const today = new Date();
@@ -18,42 +14,14 @@ function Print() {
     setCurrentDate(formattedDate);
   }, []);
 
-  const handleSppgChange = async (index, value) => {
+  const handleSppgChange = (index, value) => {
     const newSppgNumbers = [...sppgNumbers];
     newSppgNumbers[index] = value;
     setSppgNumbers(newSppgNumbers);
-
-    // Fetch data based on the updated sppgNumbers
-    const fetchedData = await fetchData(newSppgNumbers);
-    setData(fetchedData);
-  };
-
-  const fetchData = async (sppgNumbersArray) => {
-    const dataPromises = sppgNumbersArray.map(async (sppg) => {
-      if (!sppg) return null;  // Skip empty sppg numbers
-      const q = query(collection(db, "do_10"), where("sppg", "==", sppg));
-      const querySnapshot = await getDocs(q);
-      let result = null;
-      querySnapshot.forEach((doc) => {
-        result = doc.data();
-      });
-      return result;
-    });
-
-    const results = await Promise.all(dataPromises);
-    return results.filter((item) => item !== null);  // Filter out null values
   };
 
   const addSppgInput = () => {
     setSppgNumbers([...sppgNumbers, ""]);
-    setData([...data, null]);
-  };
-
-  const removeSppgInput = () => {
-    if (sppgNumbers.length > 1) {
-      setSppgNumbers(sppgNumbers.slice(0, -1));
-      setData(data.slice(0, -1));
-    }
   };
 
   const printPage = () => {
@@ -63,10 +31,7 @@ function Print() {
   return (
     <>
       <div>
-        <div
-          className="container mx-auto mt-10 font-inter flex"
-          style={{ width: "60vw" }}
-        >
+        <div className="container mx-auto mt-10 font-inter flex" style={{ width: "60vw" }}>
           {/* Left side with SPPG input fields in a row */}
           <div className="w-1/4 mr-8 flex flex-col items-start">
             <h2 className="text-xl font-bold mb-4">Nomor SPPG</h2>
@@ -85,72 +50,65 @@ function Print() {
                 </div>
               ))}
             </div>
-            <div>
-              <button
-                type="button"
-                onClick={addSppgInput}
-                className="mt-4 mx-10 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 focus:outline-none"
-              >
-                +
-              </button>
-              <button
-                type="button"
-                onClick={removeSppgInput}
-                className="mt-4 mx-8 px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 focus:outline-none"
-              >
-                -
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={addSppgInput}
+              className="mt-4 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 focus:outline-none"
+            >
+              + Tambah SPPG
+            </button>
           </div>
 
           {/* Right side with the table and other content */}
           <div id="printableArea" className="w-3/4">
-            <h1 className="text-2xl font-bold text-left mb-4">
-              Tanggal {currentDate}
-            </h1>
+            <h1 className="text-2xl font-bold text-left mb-4">Tanggal {currentDate}</h1>
             <table className="table-auto w-full border border-gray-700">
               <thead>
                 <tr className="border border-gray-700">
-                  <th className="px-4 py-2 text-left border border-gray-700">
-                    No.
-                  </th>
-                  <th className="px-4 py-2 text-left border border-gray-700">
-                    No. DO
-                  </th>
-                  <th className="px-4 py-2 text-left border border-gray-700">
-                    Kontrak
-                  </th>
-                  <th className="px-4 py-2 text-left border border-gray-700">
-                    Atas nama
-                  </th>
-                  <th className="px-4 py-2 text-left border border-gray-700">
-                    Kuanta
-                  </th>
-                  <th className="px-4 py-2 text-left border border-gray-700">
-                    Masa berlaku
-                  </th>
+                  <th className="px-4 py-2 text-left border border-gray-700">No.</th>
+                  <th className="px-4 py-2 text-left border border-gray-700">No. DO</th>
+                  <th className="px-4 py-2 text-left border border-gray-700">Kontrak</th>
+                  <th className="px-4 py-2 text-left border border-gray-700">Atas nama</th>
+                  <th className="px-4 py-2 text-left border border-gray-700">Kuanta</th>
+                  <th className="px-4 py-2 text-left border border-gray-700">Masa berlaku</th>
                 </tr>
               </thead>
               <tbody>
-                {data.map((row, index) => (
-                  row && (
-                    <tr key={index} className="border border-gray-700">
-                      <td className="px-4 py-2 border border-gray-700">{index + 1}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.no_do}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.no_kontrak}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.nama}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.kuanta_10}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.berlaku}</td>
-                    </tr>
-                  )
-                ))}
+                <tr className="border border-gray-700">
+                  <td className="px-4 py-2 border border-gray-700">1</td>
+                  <td className="px-4 py-2 border border-gray-700">150012024</td>
+                  <td className="px-4 py-2 border border-gray-700">SG13240024</td>
+                  <td className="px-4 py-2 border border-gray-700">NUNIK FAUZIAH</td>
+                  <td className="px-4 py-2 border border-gray-700">34</td>
+                  <td className="px-4 py-2 border border-gray-700">10 Agustus 2024</td>
+                </tr>
+                <tr className="border border-gray-700">
+                  <td className="px-4 py-2 border border-gray-700">2</td>
+                  <td className="px-4 py-2 border border-gray-700">150012026</td>
+                  <td className="px-4 py-2 border border-gray-700">SG13240026</td>
+                  <td className="px-4 py-2 border border-gray-700">NUNIK FAUZIAH</td>
+                  <td className="px-4 py-2 border border-gray-700">1721</td>
+                  <td className="px-4 py-2 border border-gray-700">10 Agustus 2024</td>
+                </tr>
+                <tr className="border border-gray-700">
+                  <td className="px-4 py-2 border border-gray-700">73</td>
+                  <td className="px-4 py-2 border border-gray-700">150012029</td>
+                  <td className="px-4 py-2 border border-gray-700">SG13240029</td>
+                  <td className="px-4 py-2 border border-gray-700">NUNIK FAUZIAH</td>
+                  <td className="px-4 py-2 border border-gray-700">341</td>
+                  <td className="px-4 py-2 border border-gray-700">10 Agustus 2024</td>
+                </tr>
+                <tr className="border border-gray-700">
+                  <td className="px-4 py-2" colSpan="3"></td>
+                  <td className="px-4 py-2 font-bold">JUMLAH</td>
+                  <td className="px-4 py-2 font-bold">2096</td>
+                  <td className="px-4 py-2 font-bold">KILOGRAM</td>
+                </tr>
               </tbody>
             </table>
 
             <div className="text-center pt-4 pl-4 h-12 border-l border-r border-gray-700">
-              <h1 className="font-bold text-xl text-left">
-                Terbilang: Dua Ribu Sembilan Puluh Enam Kilogram
-              </h1>
+              <h1 className="font-bold text-xl text-left">Terbilang: Dua Ribu Sembilan Puluh Enam Kilogram</h1>
             </div>
             <div className="flex justify-center">
               <div className="w-1/2 border-l border-b border-gray-700 p-4">
@@ -162,12 +120,8 @@ function Print() {
                 </div>
               </div>
               <div className="w-1/2 border-r border-b border-gray-700 p-4">
-                <p className="font-bold text-center mb-2">
-                  PT. SINERGI GULA NUSANTARA
-                </p>
-                <p className="font-bold text-center mb-24">
-                  PABRIK GULA TJOEKIR
-                </p>
+                <p className="font-bold text-center mb-2">PT. SINERGI GULA NUSANTARA</p>
+                <p className="font-bold text-center mb-24">PABRIK GULA TJOEKIR</p>
                 <div className="flex justify-center items-center">
                   <span className="mr-24">(</span>
                   <div className="p-4"></div>
@@ -204,9 +158,11 @@ function Print() {
               left: 0;
               top: 0;
               width: 100%;
+              height: auto;
             }
-            button {
-              display: none;
+            @page {
+              size: A4;
+              margin: 20mm;
             }
           }
         `}
