@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
 import '../../firebaseConfig';
 
 function Print() {
@@ -18,41 +18,32 @@ function Print() {
     setCurrentDate(formattedDate);
   }, []);
 
-  const handleSppgChange = async (index, value) => {
+  const fetchData = async (sppg) => {
+    const q = query(collection(db, "do_10"), where("sppg", "==", sppg));
+    const querySnapshot = await getDocs(q);
+    const temp = [];
+    querySnapshot.forEach((doc) => {
+      temp.push(doc.data());
+    });
+    setData(temp);
+  };
+
+  const handleSppgChange = (index, value) => {
     const newSppgNumbers = [...sppgNumbers];
     newSppgNumbers[index] = value;
     setSppgNumbers(newSppgNumbers);
-
-    // Fetch data based on the updated sppgNumbers
-    const fetchedData = await fetchData(newSppgNumbers);
-    setData(fetchedData);
-  };
-
-  const fetchData = async (sppgNumbersArray) => {
-    const dataPromises = sppgNumbersArray.map(async (sppg) => {
-      if (!sppg) return null;  // Skip empty sppg numbers
-      const q = query(collection(db, "do_10"), where("sppg", "==", sppg));
-      const querySnapshot = await getDocs(q);
-      let result = null;
-      querySnapshot.forEach((doc) => {
-        result = doc.data();
-      });
-      return result;
-    });
-
-    const results = await Promise.all(dataPromises);
-    return results.filter((item) => item !== null);  // Filter out null values
+    
+    // Fetch data for the updated SPPG number
+    fetchData(value);
   };
 
   const addSppgInput = () => {
     setSppgNumbers([...sppgNumbers, ""]);
-    setData([...data, null]);
   };
 
   const removeSppgInput = () => {
     if (sppgNumbers.length > 1) {
       setSppgNumbers(sppgNumbers.slice(0, -1));
-      setData(data.slice(0, -1));
     }
   };
 
@@ -86,21 +77,22 @@ function Print() {
               ))}
             </div>
             <div>
-              <button
-                type="button"
-                onClick={addSppgInput}
-                className="mt-4 mx-10 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 focus:outline-none"
-              >
-                +
-              </button>
-              <button
-                type="button"
-                onClick={removeSppgInput}
-                className="mt-4 mx-8 px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 focus:outline-none"
-              >
-                -
-              </button>
+            <button
+              type="button"
+              onClick={addSppgInput}
+              className="mt-4 mx-10 px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 focus:outline-none"
+            >
+              +
+            </button>
+            <button
+              type="button"
+              onClick={removeSppgInput}
+              className="mt-4 mx-8 px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 focus:outline-none"
+            >
+              -
+            </button>
             </div>
+            
           </div>
 
           {/* Right side with the table and other content */}
@@ -132,18 +124,24 @@ function Print() {
                 </tr>
               </thead>
               <tbody>
-                {data.map((row, index) => (
-                  row && (
+                {data.length > 0 ? (
+                  data.map((item, index) => (
                     <tr key={index} className="border border-gray-700">
                       <td className="px-4 py-2 border border-gray-700">{index + 1}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.no_do}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.no_kontrak}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.nama}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.kuanta_10}</td>
-                      <td className="px-4 py-2 border border-gray-700">{row.berlaku}</td>
+                      <td className="px-4 py-2 border border-gray-700">{item.no_do}</td>
+                      <td className="px-4 py-2 border border-gray-700">{item.no_kontrak}</td>
+                      <td className="px-4 py-2 border border-gray-700">{item.nama}</td>
+                      <td className="px-4 py-2 border border-gray-700">{item.kuanta_10}</td>
+                      <td className="px-4 py-2 border border-gray-700">{item.berlaku}</td>
                     </tr>
-                  )
-                ))}
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="px-4 py-2 text-center">
+                      Tidak ada Data Yang Diinputkan!
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
 
@@ -204,9 +202,11 @@ function Print() {
               left: 0;
               top: 0;
               width: 100%;
+              height: auto;
             }
-            button {
-              display: none;
+            @page {
+              size: A4;
+              margin: 20mm;
             }
           }
         `}
