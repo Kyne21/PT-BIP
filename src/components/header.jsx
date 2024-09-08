@@ -74,11 +74,11 @@ export default function Header() {
               className="h-20 w-auto flex items-center"
             />
             <div className="text-container ml-4 flex flex-col justify-center">
-              <h2 className="font-inter font-semibold text-xl text-logo-blue">
-                PT BOGART INTI PERKASA
+              <h2 className="font-inter font-medium text-xl text-gray-900">
+                PT Sinergi Gula Nusantara
               </h2>
               <p className="font-inter font-light text-gray-600">
-                Construction & Pumps
+                Pabrik Gula Tjoekir
               </p>
             </div>
           </a>
@@ -159,6 +159,12 @@ export default function Header() {
             className="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
           >
             Print DO 90
+          </a>
+          <a
+            href="/database"
+            className="text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700"
+          >
+            Database
           </a>
         </PopoverGroup>
       </nav>

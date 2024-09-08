@@ -30,7 +30,7 @@ function Print() {
 
   const fetchData = async (sppgNumbersArray) => {
     const dataPromises = sppgNumbersArray.map(async (sppg) => {
-      if (!sppg) return null;  // Skip empty sppg numbers
+      if (!sppg) return null;
       const q = query(collection(db, "do_10"), where("sppg", "==", sppg));
       const querySnapshot = await getDocs(q);
       let result = null;

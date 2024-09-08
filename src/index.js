@@ -11,6 +11,7 @@ import List10 from './pages/list10'
 import List90 from './pages/list90'
 import Print from './pages/print10';
 import Perintah from './pages/print90';
+import Database from './pages/databaseList';
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,11 @@ const router = createBrowserRouter([
   {
     path:'/print90',
     element: <Perintah/>
-  }
+  },
+  {
+    path:'/database',
+    element: <Database/>
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
